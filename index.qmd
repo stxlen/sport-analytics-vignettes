@@ -1,9 +1,3 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
-
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
-
-```{r}
-1 + 1
-```
+This document serves multiple purposes. Firstly, it acts as a repository for code snippets and concepts that I have found to be highly valuable. Secondly, it functions as a "how-to" guide for topics that may not be explicitly explained in other online resources. Thirdly, it serves as a quick reference for code that I frequently use but sometimes struggle to recall the correct format. Lastly, it provides a roadmap to enhance competency in sport analytic processes.
