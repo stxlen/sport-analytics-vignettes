@@ -1,1 +1,260 @@
 # Data Exploration and Visualization
+
+## Stacked ggplot with custom periodization colors
+
+How to create a stacked bar chart to see your gps for the week. Label with your morphocycle/tactical periodization labels. And as a kicker - start your week on Thursday since that is your first game. Final output and code will look like this:
+
+```{r final-first}
+#| code-fold: true
+#| warning: false
+library(lubridate)
+library(tibble)
+library(dplyr)
+library(ggplot2)
+library(gt)
+
+# DATA -----------------------------------------------------------------------------------------------------------------
+# Create our own data
+raw_gps_df <- tibble(
+  date = seq.Date(from = as.Date('2023-08-01'), to = as.Date('2023-08-14'), 
+                  by = 'days'),
+  metric = c(0, 8, 12, 18, 6, 12, 20, 0, 6, 9, 7, 19, 4, 17)
+  )
+  
+raw_session_desc <- tibble(
+  date = seq.Date(from = as.Date('2023-08-01'), to = as.Date('2023-08-14'), 
+                  by = 'days'),
+  tp_code = c('Off', 'ReEntry', 'Strength', 'Match 1', 'Recovery', 'Activation',
+              'Match 2', 'Off', 'Strength', 'Speed', 'Activation', 'Match 1',
+              'ReEntry-Activation', 'Match 2')
+  )
+
+# Color codes. Presented a little cleaner to read (for us humans)
+raw_tp_codes <-tribble(
+~tp_code, ~tp_color,
+'Off', 'grey',
+'ReEntry', 'lightgreen',
+'Strength', 'blue',
+'Endurance', 'limegreen',
+'Speed', 'yellow',
+'Activation', '#fff5a9',
+'ReEntry-Activation','lightgreen',
+'Match 1', 'darkgreen',
+'Match 2', 'darkgreen',
+'Recovery', 'chartreuse'
+)
+
+# CUSTOM FUNCTION ------------------------------------------------------------------------------------------------------
+
+# Custom function to change a day ("Sunday", "Monday", "Tuesday", etc) 
+# into a number with Sun = 1. Surprised this isn't a function in lubridate.
+daynum <- function(day){
+  
+  day <- tolower(day)
+  
+  if(grepl("su", day)) {
+    return(1)
+    
+  } else if (grepl("mo", day)) {
+    return(2)
+    
+  } else if (grepl("tu", day)) {
+    return(3)
+  
+  } else if (grepl("we", day)) {
+    return(4)
+    
+  } else if (grepl("th", day)) {
+    return(5)
+    
+  } else if (grepl("fr", day)) {
+    return(6)
+
+  } else if (grepl("sa", day)) {
+    return(7)
+    
+  } else {
+    return(NA)
+  }
+}
+
+# This is the order we want our week to be in. 
+# Thursday is the first day, Wednesday is the last.
+
+week_order <- c('Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed' )
+
+# TRANSFORM ------------------------------------------------------------------------------------------------------------
+
+# Combine into one data frame
+session_df <- raw_gps_df |>
+  left_join(raw_session_desc, by = 'date') |>
+  left_join(raw_tp_codes, by = 'tp_code') |>
+  mutate(week = floor_date(date, unit = 'weeks', daynum(week_order[1])))
+
+cols <- distinct(session_df, tp_code, tp_color) |> deframe()
+
+# PLOT -----------------------------------------------------------------------------------------------------------------
+
+session_df |>
+  ggplot(aes(x = week, y = metric, fill = tp_code, group = date)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_fill_manual(
+    name = "Tact Periodization Days",
+    values = cols,
+  ) +
+  scale_x_date(
+    breaks = session_df$week,
+    date_labels = "%m-%d") +
+  theme_minimal() 
+
+```
+
+First lets create some fake data to use. You would probably import these with `read_csv`, but I'm going to keep it simple and just create it here.
+
+```{r}
+#| warning: false
+library(lubridate)
+library(tibble)
+library(dplyr)
+library(ggplot2)
+library(gt)
+
+# Create our own data
+raw_gps_df <- tibble(
+  date = seq.Date(from = as.Date('2023-08-01'), to = as.Date('2023-08-14'), 
+                  by = 'days'),
+  metric = c(0, 8, 12, 18, 6, 12, 20, 0, 6, 9, 7, 19, 4, 17)
+  )
+  
+raw_session_desc <- tibble(
+  date = seq.Date(from = as.Date('2023-08-01'), to = as.Date('2023-08-14'), 
+                  by = 'days'),
+  tp_code = c('Off', 'ReEntry', 'Strength', 'Match 1', 'Recovery', 'Activation',
+              'Match 2', 'Off', 'Strength', 'Speed', 'Activation', 'Match 1',
+              'ReEntry-Activation', 'Match 2')
+  )
+
+# Look at the data
+raw_gps_df |> gt()
+raw_session_desc |> gt()
+```
+
+I usually import my data as `raw_data <- ...` as it's a pain to trouble shoot and have to and have to to rerun the import from the top of the code.
+
+```{r}
+# Combine data
+session_df <- raw_gps_df |>
+  left_join(raw_session_desc, by = 'date')
+
+# View combined data
+session_df |> head() |> gt()
+
+```
+
+```{r}
+# Plot data
+session_df |>
+  ggplot(aes(x = date, y = metric, fill = tp_code)) +
+  geom_col() +
+  theme_minimal()
+
+```
+
+It would be nice to use our own custom color scheme. Help on using custom color and labels in ggplot found [here](https://stackoverflow.com/questions/68557812/use-custom-color-and-custom-label-from-dataframe-columns-in-ggplot2). The 'trick' is to use `deframe`, which converts a two-column data frames to a named vector or list, using the first column as name and the second column as value. If the input has only one column, an unnamed vector is returned
+```{r}
+# Color codes. Presented a little cleaner to read (for us humans)
+raw_tp_codes <-tribble(
+~tp_code, ~tp_color,
+'Off', 'grey',
+'ReEntry', 'lightgreen',
+'Strength', 'blue',
+'Endurance', 'limegreen',
+'Speed', 'yellow',
+'Activation', '#fff5a9',
+'ReEntry-Activation','lightgreen',
+'Match 1', 'darkgreen',
+'Match 2', 'darkgreen',
+'Recovery', 'chartreuse'
+)
+
+
+# Import and combine data
+session_df <- raw_gps_df |>
+left_join(raw_session_desc, by = 'date')
+
+
+# deframe() converts two-column data frames to a named vector or list
+cols <- distinct(raw_tp_codes, tp_code, tp_color) |> deframe()
+
+# Following not used but may come in handy in the future
+# labs \<- distinct(raw_tp_codes, tp_code, tp_code) |> deframe()
+
+# PLot
+session_df |>
+ggplot(aes(x = date, y = metric, fill = tp_code)) +
+geom_col(position='stack', stat='identity') +
+scale_color_manual(aesthetics = 'fill',
+values = cols
+) +
+theme_minimal()
+```
+
+```{r}
+
+# Custom function to change a day ("Sunday", "Monday", "Tuesday", etc) 
+# into a number with Sun = 1. Surprised this isn't a function in lubridate.
+daynum <- function(day){
+  
+  day <- tolower(day)
+  
+  if(grepl("su", day)) {
+    return(1)
+    
+  } else if (grepl("mo", day)) {
+    return(2)
+    
+  } else if (grepl("tu", day)) {
+    return(3)
+  
+  } else if (grepl("we", day)) {
+    return(4)
+    
+  } else if (grepl("th", day)) {
+    return(5)
+    
+  } else if (grepl("fr", day)) {
+    return(6)
+
+  } else if (grepl("sa", day)) {
+    return(7)
+    
+  } else {
+    return(NA)
+  }
+}
+
+# This is the order we want our week to be in. 
+# Thursday is the first day, Wednesday is the last.
+week_order <- c('Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed' )
+
+# Combine 
+session_df <- raw_gps_df |>
+  left_join(raw_session_desc, by = 'date') |>
+  left_join(raw_tp_codes, by = 'tp_code') |>
+  mutate(week = floor_date(date, unit = 'weeks', daynum(week_order[1])))
+
+cols <- distinct(session_df, tp_code, tp_color) |> deframe()
+
+session_df |>
+  ggplot(aes(x = week, y = metric, fill = tp_code, group = date)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_fill_manual(
+    name = "Tact Periodization Days",
+    values = cols,
+  ) +
+  scale_x_date(
+    breaks = session_df$week,
+    date_labels = "%m-%d") +
+  theme_minimal() 
+
+```
