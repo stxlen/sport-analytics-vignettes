@@ -1,1 +1,87 @@
 # Custom Functions
+
+## Calculate win probability based on individual shot xG.
+
+```{r xg-win-prob-function}
+
+#| code-fold: true
+#| warning: false
+
+xg_win_prob <- function(team_a_shots_xg, team_b_shots_xg, n_sim){
+  
+  # Create a function to simulate a match
+  simulate_match <- function(team_a_shots_xg, team_b_shots_xg){
+    
+    # Create a function to simulate a goal
+    simulate_goal <- function(shot_xg_list){
+      #Start goal count at 0
+      goals <- 0
+      
+      # For each shot, if it goes in, add a goal
+      for (shot in shot_xg_list){
+        if (runif(1)<=shot){
+          goals <- goals + 1
+        }
+      }
+      
+      # Return the number of goals
+      return(goals)
+      
+    }
+    
+    # Simulate goals for each team
+    team_a_goals <- simulate_goal(team_a_shots_xg)
+    team_b_goals <- simulate_goal(team_b_shots_xg)
+    
+    # Return the goals as separate lists
+    return(list(team_a_goals, team_b_goals))
+    
+  }
+  
+  # Initialize empty lists
+  team_a_goals <- list()
+  team_b_goals <- list()
+  
+  # Run the simulation n times
+  for (i in 1:n_sim) {
+    # Get simulated goals for each team
+    simulated_goals <- simulate_match(team_a_shots_xg, team_b_shots_xg)
+    
+    # Store team-specific goals in separate lists
+    team_a_goals[[i]] <- simulated_goals[[1]]
+    team_b_goals[[i]] <- simulated_goals[[2]]
+  }
+  
+  # Return simulation data frame
+  # Combine lists into a data frame
+  simulations_df <- data.frame(
+    team_a_goals = unlist(team_a_goals),
+    team_b_goals = unlist(team_b_goals)
+  ) |>
+    # Calculate the winner
+    mutate(winner = case_when(
+      team_a_goals > team_b_goals ~ "team_a",
+      team_a_goals < team_b_goals ~ "team_b",
+      team_a_goals == team_b_goals ~ "draw"
+    ))
+  
+  # Return simulation data frame in two forms
+  # 1 As a win-draw-win probability
+  
+  win_prob <- simulations_df |>
+    count(winner) |>
+    mutate(prob = n / sum(n))
+  
+  # 2 As the probability for each result
+  
+  result_prob <- simulations_df |>
+    count(team_a_goals,team_b_goals) |>
+    mutate(prob = n / sum(n)) |>
+    arrange(desc(n))
+  
+  list(win_prob, result_prob)
+  
+}
+
+```
+
