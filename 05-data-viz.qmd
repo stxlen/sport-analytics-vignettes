@@ -161,6 +161,7 @@ session_df |>
 ```
 
 It would be nice to use our own custom color scheme. Help on using custom color and labels in ggplot found [here](https://stackoverflow.com/questions/68557812/use-custom-color-and-custom-label-from-dataframe-columns-in-ggplot2). The 'trick' is to use `deframe`, which converts a two-column data frames to a named vector or list, using the first column as name and the second column as value. If the input has only one column, an unnamed vector is returned
+
 ```{r}
 # Color codes. Presented a little cleaner to read (for us humans)
 raw_tp_codes <-tribble(
