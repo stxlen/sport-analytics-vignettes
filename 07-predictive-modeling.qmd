@@ -1,1 +1,204 @@
 # Predictive Modeling
+
+## Feature Selection | Random Forests | Machine Learning
+
+While correlation is a valuable tool, it does have limitations. Machine learning with random forests can offer complementary insights and uncover relationships beyond what correlation reveals, in a few key ways:
+
+Nonlinear relationships: Correlation only detects linear relationships, meaning variables move proportionally together (positive) or inversely (negative). Random forests, as decision tree ensembles, can capture nonlinear relationships. Imagine a U-shaped curve - correlation wouldn't pick this up, but a random forest could learn that a certain range of values in one variable predicts changes in another despite no linear trend.
+
+Complex interactions: Correlation looks at each variable pair individually. Random forests consider interactions between multiple variables simultaneously. This is crucial for real-world data, where factors often influence each other in intricate ways. For example, temperature and humidity might have no individual correlation with crop yield, but their combined effect could be significant, which a random forest might capture.
+
+Feature importance: Random forests provide feature importance scores, highlighting which variables contribute most to the model's predictions. This goes beyond correlation's simple strength measure and helps identify key drivers in complex systems. Understanding these drivers can lead to better decision-making even if the exact relationship isn't fully linear.
+
+Handling diverse data: Random forests can handle diverse data types (numerical, categorical) without specific transformations, unlike some correlation methods. This flexibility allows them to analyze real-world datasets more readily.
+
+However, it's important to remember that:
+
+* Random forests themselves don't directly tell you "what causes what". They identify predictive relationships, but interpreting those requires domain knowledge and additional analysis.
+* Random forests can be "black boxes" - explaining their inner workings can be challenging. While feature importance gives clues, the complex decision tree structure might not be easily interpretable.
+
+Overall, random forests and correlation are complementary tools. Correlation offers a quick, interpretable measure of linear relationships, while random forests can delve deeper into nonlinear interactions and complex data, but with less interpretability. Combining both approaches can lead to a richer understanding of your data.
+
+We will use the NWSL match data from the 2021-2023 seasons to select the most important features to predict the outcome of a match (i.e Win or Loss), as well as see if we can predict the results with the use of the `Boruta` package.
+
+This method is based after [Feature Selection Using R | Machine Learning Models using Boruta Package](https://youtu.be/VEBax2WMbEA?si=Iub3do-n5FNM6HUM) by Dr. Bharatendra Rai
+
+```{r}
+#| echo: FALSE
+#| warning: FALSE
+
+library(here)
+library(tidyverse)
+library(gt)
+
+library(Boruta)
+library(mlbench)
+library(caret)
+library(randomForest)
+```
+
+In previous explorations, it was determined that the model worked best if the model was trained, and the predictions were made, using matches that did not result in a draw. Therefore, we will filter the data to only include matches that did not result in a draw.
+
+Note we will eventually need to convert our target vector (`result`) to a factor.
+
+```{r}
+#| warning: FALSE
+
+team_stats <- read_csv("/Users/seansteele/dev/soccer/data/processed/wyscout_team_stats/nwsl_wyscout_match_stats.csv",
+                       show_col_types = FALSE) |>
+  filter(result != "D")
+
+glimpse(team_stats)
+```
+
+## Data Cleaning
+
+It is recommended to remove any columns that are not useful for the model, or those that highly correlate with our `result` columns. First to remove items that are not useful for the model. 
+
+```{r}
+
+team_stats_clean <- team_stats |>
+  select(-c(date, match, competition, duration, team, scheme))
+```
+
+Then to find the correlation between the columns and the `result` column. Since `result` is not a numeric value, I will use `pts` as a proxy for the `result` column.
+
+```{r}
+
+team_stats_cor <- team_stats_clean |>
+  select(-c(result)) |>
+  corrr::correlate(quiet = TRUE) |>
+  select(term, pts) |>
+  # Hack to put both positive and negative correlations together
+  mutate(pts = round(pts, 2),
+         abs_pts = abs(pts)) |>
+  arrange(desc(abs_pts)) |>
+  select(-abs_pts) |>
+  slice_head(n = 10)
+
+team_stats_cor |> gt()
+
+```
+
+It should come as no surprise that the `goals` and `goals_conceded` columns are highly correlated with the `result`/`pts` column. We will remove these columns from the dataset, as well as the `pts` column. Note: I have also converted the `result` column to a factor.
+
+```{r}
+
+team_stats_clean <- team_stats |>
+  select(-c(date, match, competition, duration, team, scheme, goals, conceded_goals, pts)) |>
+  mutate(result = as.factor(result))
+```
+
+### Feature Selection
+
+We now will use the `Boruta` package to select the most important features to predict the outcome of a match (i.e Win or Loss).
+
+```{r}
+set.seed(111)
+boruta <- Boruta(result ~ ., 
+                 data = team_stats_clean, 
+                 doTrace = 0, # set to 2 to see the progress
+                 maxRuns = 300) # increase if you would like to try to further reduce
+
+print(boruta)
+```
+
+Boruta allows us to visualized the results of the feature selection process.
+
+```{r}
+plot(boruta, las = 2, cex.axis = 0.4)
+```
+
+With such dense information, the graph can be a little tricky to read. We can also view the results in a table format.
+
+```{r}
+non_rejected_vars <- attStats(boruta) |>
+  rownames_to_column("variable") |>
+  as_tibble() |>
+  arrange(desc(meanImp)) |>
+  select(variable, decision) |>
+  filter(decision != "Rejected")
+
+non_rejected_vars |> 
+  gt()
+```
+
+We are now going to build a model to predict the outcome of the matches based on the variables. We will split our data into a training and test set.  We will use the training set to build our model, and the test set to evaluate the model. 
+
+```{r}
+
+# Data Partition
+set.seed(222)
+ind <- sample(2, nrow(team_stats_clean), replace = TRUE, prob = c(0.6, 0.4))
+train <- team_stats_clean[ind == 1, ]
+test <- team_stats_clean[ind == 2, ]
+```
+
+First, we will see how well our model can predict a W/L outcome using all of the variables. This will be our benchmark for testing our reduced variable models.
+
+```{r}
+# Random Forest Model
+set.seed(333)
+rf_all_vars <- randomForest(result ~ ., data = train)
+rf_all_vars
+```
+
+Using all the data, we can see that the model can predict the outcome of the matches ~70% of the time. 
+
+Now to look at how well the model predicts the test data. First, we will use all the variables to predict the outcome of the `test` data. I've split the process into two steps to show how it's done. Here , `p` is returned, which is the prediction of either a "W" or "L" for each match in the `test` data.
+
+```{r}
+
+# Prediction & Confusion Matrix - Test
+p <- predict(rf_all_vars, test)
+p[1:10]
+```
+
+`predict()` returns a vector of W/L predictions. We can use the `confusionMatrix()` function to see how well our model predicted the outcome of the test data.
+
+```{r}
+confusionMatrix(p, test$result)
+```
+
+We can see that accuracy is 79%. This will be our benchmark to measure our reduced features. 
+
+How well does our reduced model work? We will use all non-rejected variables (i.e. "Confirmed" and "Tentative") from the Boruta model.
+
+```{r}
+# Random Forest Models - Non-Rejected
+set.seed(333)
+rf_non_rej_model <- getNonRejectedFormula(boruta) |>
+  as.formula() |>  # This replaces `p` from above to work in a pipe
+  randomForest(data = train) |>
+  predict(test) |>
+  confusionMatrix(test$result)
+
+rf_non_rej_model
+```
+
+We've actually improved our accuracy by reducing the number of variables in our model. 
+
+Finally, we will build a model using only the "Confirmed" variables from the Boruta model.
+
+```{r}
+
+# Random Forest Models - Confirmed
+set.seed(333)
+confirmed_model <- getConfirmedFormula(boruta) |>
+  as.formula() |> # This replaces `p` from above to work in a pipe
+  randomForest(data = train) |>
+  predict(test) |>
+  confusionMatrix(test$result)
+
+confirmed_model
+```
+
+Here are the reduced features that we can use to predict the outcome of a match.
+
+```{r}
+non_rejected_vars |> 
+  filter(decision == "Confirmed") |>
+  pull(variable)
+```
+
+It is recommended that we turn to other models, as well as expert domain knowledge, to further refine our model. Some of these features, such as throw-ins, are not likely to be relevant, but may point to other features that are. The data provided in the model does not include opponents data, and so items like opponents turnovers, may be a proxy for the team's throw-ins.

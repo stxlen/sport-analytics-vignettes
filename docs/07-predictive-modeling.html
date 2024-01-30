@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,8 +17,42 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -57,7 +91,8 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -68,11 +103,16 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-predictive-modeling.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -80,77 +120,97 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Sport Analytics Vignettes in R</a> 
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-data-collection.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Collection</span></a>
+  <a href="./01-data-collection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Collection</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-data-management.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Storage and Management</span></a>
+  <a href="./02-data-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Storage and Management</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data-prep.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Cleaning and Preparation</span></a>
+  <a href="./03-data-prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Cleaning and Preparation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-custom-functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Custom Functions</span></a>
+  <a href="./04-custom-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Custom Functions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-data-viz.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Exploration and Visualization</span></a>
+  <a href="./05-data-viz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Exploration and Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-statistical-analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Statistical Analysis</span></a>
+  <a href="./06-statistical-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Statistical Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-predictive-modeling.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></a>
+  <a href="./07-predictive-modeling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-ml-ai.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Machine Learning (ML) and Artificial Intelligence (AI)</span></a>
+  <a href="./08-ml-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Machine Learning (ML) and Artificial Intelligence (AI)</span></span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#feature-selection-random-forests-machine-learning" id="toc-feature-selection-random-forests-machine-learning" class="nav-link active" data-scroll-target="#feature-selection-random-forests-machine-learning"><span class="header-section-number">7.1</span> Feature Selection | Random Forests | Machine Learning</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning"><span class="header-section-number">7.2</span> Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#feature-selection" id="toc-feature-selection" class="nav-link" data-scroll-target="#feature-selection"><span class="header-section-number">7.2.1</span> Feature Selection</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Predictive Modeling</span></h1>
 </div>
 
 
@@ -165,8 +225,1425 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="feature-selection-random-forests-machine-learning" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="feature-selection-random-forests-machine-learning"><span class="header-section-number">7.1</span> Feature Selection | Random Forests | Machine Learning</h2>
+<p>While correlation is a valuable tool, it does have limitations. Machine learning with random forests can offer complementary insights and uncover relationships beyond what correlation reveals, in a few key ways:</p>
+<p>Nonlinear relationships: Correlation only detects linear relationships, meaning variables move proportionally together (positive) or inversely (negative). Random forests, as decision tree ensembles, can capture nonlinear relationships. Imagine a U-shaped curve - correlation wouldn’t pick this up, but a random forest could learn that a certain range of values in one variable predicts changes in another despite no linear trend.</p>
+<p>Complex interactions: Correlation looks at each variable pair individually. Random forests consider interactions between multiple variables simultaneously. This is crucial for real-world data, where factors often influence each other in intricate ways. For example, temperature and humidity might have no individual correlation with crop yield, but their combined effect could be significant, which a random forest might capture.</p>
+<p>Feature importance: Random forests provide feature importance scores, highlighting which variables contribute most to the model’s predictions. This goes beyond correlation’s simple strength measure and helps identify key drivers in complex systems. Understanding these drivers can lead to better decision-making even if the exact relationship isn’t fully linear.</p>
+<p>Handling diverse data: Random forests can handle diverse data types (numerical, categorical) without specific transformations, unlike some correlation methods. This flexibility allows them to analyze real-world datasets more readily.</p>
+<p>However, it’s important to remember that:</p>
+<ul>
+<li>Random forests themselves don’t directly tell you “what causes what”. They identify predictive relationships, but interpreting those requires domain knowledge and additional analysis.</li>
+<li>Random forests can be “black boxes” - explaining their inner workings can be challenging. While feature importance gives clues, the complex decision tree structure might not be easily interpretable.</li>
+</ul>
+<p>Overall, random forests and correlation are complementary tools. Correlation offers a quick, interpretable measure of linear relationships, while random forests can delve deeper into nonlinear interactions and complex data, but with less interpretability. Combining both approaches can lead to a richer understanding of your data.</p>
+<p>We will use the NWSL match data from the 2021-2023 seasons to select the most important features to predict the outcome of a match (i.e Win or Loss), as well as see if we can predict the results with the use of the <code>Boruta</code> package.</p>
+<p>This method is based after <a href="https://youtu.be/VEBax2WMbEA?si=Iub3do-n5FNM6HUM">Feature Selection Using R | Machine Learning Models using Boruta Package</a> by Dr.&nbsp;Bharatendra Rai</p>
+<p>In previous explorations, it was determined that the model worked best if the model was trained, and the predictions were made, using matches that did not result in a draw. Therefore, we will filter the data to only include matches that did not result in a draw.</p>
+<p>Note we will eventually need to convert our target vector (<code>result</code>) to a factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>team_stats <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"/Users/seansteele/dev/soccer/data/processed/wyscout_team_stats/nwsl_wyscout_match_stats.csv"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(result <span class="sc">!=</span> <span class="st">"D"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(team_stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 735
+Columns: 111
+$ date                                      &lt;date&gt; 2022-10-03, 2022-10-03, 202…
+$ match                                     &lt;chr&gt; "Chicago Red Stars - Angel C…
+$ competition                               &lt;chr&gt; "United States. NWSL", "Unit…
+$ duration                                  &lt;dbl&gt; 100, 100, 95, 95, 94, 94, 94…
+$ team                                      &lt;chr&gt; "Angel City", "Chicago Red S…
+$ scheme                                    &lt;chr&gt; "4-3-1-2 (83.78%)", "3-4-2-1…
+$ goals                                     &lt;dbl&gt; 0, 2, 1, 3, 2, 1, 0, 1, 0, 1…
+$ xg                                        &lt;dbl&gt; 1.15, 1.67, 1.59, 1.47, 1.73…
+$ shots_total                               &lt;dbl&gt; 6, 13, 18, 10, 14, 11, 12, 9…
+$ shots_on_target                           &lt;dbl&gt; 1, 7, 7, 6, 4, 6, 4, 5, 3, 6…
+$ shots_on_target_perc                      &lt;dbl&gt; 16.67, 53.85, 38.89, 60.00, …
+$ passes_total                              &lt;dbl&gt; 413, 441, 377, 313, 374, 415…
+$ passes_accurate                           &lt;dbl&gt; 316, 343, 278, 213, 284, 327…
+$ passes_accurate_perc                      &lt;dbl&gt; 76.51, 77.78, 73.74, 68.05, …
+$ possession_percent                        &lt;dbl&gt; 49.80, 50.20, 51.28, 48.72, …
+$ losses_total                              &lt;dbl&gt; 136, 127, 127, 143, 129, 121…
+$ losses_low                                &lt;dbl&gt; 22, 20, 19, 28, 30, 30, 25, …
+$ losses_medium                             &lt;dbl&gt; 60, 60, 51, 63, 44, 34, 41, …
+$ losses_high                               &lt;dbl&gt; 54, 47, 57, 52, 55, 57, 59, …
+$ recoveries_total                          &lt;dbl&gt; 84, 112, 100, 99, 101, 86, 7…
+$ recoveries_low                            &lt;dbl&gt; 31, 41, 43, 41, 41, 30, 34, …
+$ recoveries_medium                         &lt;dbl&gt; 42, 53, 41, 44, 41, 38, 25, …
+$ recoveries_high                           &lt;dbl&gt; 11, 18, 16, 14, 19, 18, 18, …
+$ duels_total                               &lt;dbl&gt; 208, 208, 228, 228, 206, 206…
+$ duels_won                                 &lt;dbl&gt; 91, 112, 102, 118, 95, 107, …
+$ duels_won_perc                            &lt;dbl&gt; 43.75, 53.85, 44.74, 51.75, …
+$ shots_outside_penalty_area                &lt;dbl&gt; 3, 5, 9, 2, 5, 5, 5, 5, 3, 4…
+$ shots_outside_penalty_area_on_target      &lt;dbl&gt; 0, 2, 5, 2, 0, 4, 2, 2, 1, 1…
+$ shots_outside_penalty_area_on_target_perc &lt;dbl&gt; 0.00, 40.00, 55.56, 100.00, …
+$ positional_attacks_total                  &lt;dbl&gt; 24, 39, 36, 29, 37, 26, 36, …
+$ positional_attacks_with_shots             &lt;dbl&gt; 4, 9, 11, 4, 9, 6, 9, 4, 4, …
+$ positional_attacks_with_shots_perc        &lt;dbl&gt; 16.67, 23.08, 30.56, 13.79, …
+$ counterattacks_total                      &lt;dbl&gt; 1, 0, 1, 1, 1, 0, 0, 4, 2, 2…
+$ counterattacks_with_shots                 &lt;dbl&gt; 1, 0, 1, 0, 0, 0, 0, 1, 1, 1…
+$ counterattacks_with_shots_perc            &lt;dbl&gt; 100.00, 0.00, 100.00, 0.00, …
+$ set_pieces_total                          &lt;dbl&gt; 20, 31, 29, 23, 19, 26, 28, …
+$ set_pieces_with_shots                     &lt;dbl&gt; 0, 3, 4, 5, 5, 3, 2, 4, 3, 4…
+$ set_pieces_with_shots_perc                &lt;dbl&gt; 0.00, 9.68, 13.79, 21.74, 26…
+$ corners_total                             &lt;dbl&gt; 3, 4, 6, 3, 7, 8, 4, 2, 4, 5…
+$ corners_with_shots                        &lt;dbl&gt; 0, 1, 2, 1, 5, 3, 1, 2, 2, 3…
+$ corners_with_shots_perc                   &lt;dbl&gt; 0.00, 25.00, 33.33, 33.33, 7…
+$ free_kicks_total                          &lt;dbl&gt; 0, 1, 4, 0, 1, 1, 3, 1, 1, 2…
+$ free_kicks_with_shots                     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ free_kicks_with_shots_perc                &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00…
+$ penalties_total                           &lt;dbl&gt; 1, 0, 0, 1, 0, 1, 1, 0, 0, 0…
+$ penalties_converted                       &lt;dbl&gt; 0, 0, 0, 1, 0, 1, 0, 0, 0, 0…
+$ penalties_converted_perc                  &lt;dbl&gt; 0, 0, 0, 100, 0, 100, 0, 0, …
+$ crosses_total                             &lt;dbl&gt; 10, 8, 15, 22, 13, 24, 17, 1…
+$ crosses_accurate                          &lt;dbl&gt; 7, 1, 4, 8, 5, 3, 3, 4, 1, 9…
+$ crosses_accurate_perc                     &lt;dbl&gt; 70.00, 12.50, 26.67, 36.36, …
+$ deep_completed_crosses                    &lt;dbl&gt; 3, 1, 5, 7, 3, 4, 3, 4, 1, 8…
+$ deep_completed_passes                     &lt;dbl&gt; 2, 8, 5, 9, 6, 3, 6, 3, 4, 9…
+$ penalty_area_entries_total                &lt;dbl&gt; 13, 24, 26, 25, 23, 33, 28, …
+$ penalty_area_entries_runs                 &lt;dbl&gt; 4, 5, 3, 2, 3, 4, 2, 8, 2, 5…
+$ penalty_area_entries_crosses              &lt;dbl&gt; 2, 7, 9, 12, 5, 13, 15, 7, 3…
+$ touches_in_penalty_area                   &lt;dbl&gt; 9, 18, 19, 17, 17, 20, 16, 1…
+$ offensive_duels_total                     &lt;dbl&gt; 64, 80, 92, 56, 81, 77, 79, …
+$ offensive_duels_won                       &lt;dbl&gt; 20, 31, 29, 18, 21, 28, 28, …
+$ offensive_duels_won_perc                  &lt;dbl&gt; 31.25, 38.75, 31.52, 32.14, …
+$ offsides                                  &lt;dbl&gt; 2, 1, 4, 2, 5, 2, 0, 6, 1, 3…
+$ conceded_goals                            &lt;dbl&gt; 2, 0, 3, 1, 1, 2, 1, 0, 1, 0…
+$ shots_against_total                       &lt;dbl&gt; 13, 6, 10, 18, 11, 14, 9, 12…
+$ shots_against_on_target                   &lt;dbl&gt; 7, 1, 7, 7, 6, 4, 5, 5, 6, 3…
+$ shots_against_on_target_perc              &lt;dbl&gt; 53.85, 16.67, 70.00, 38.89, …
+$ defensive_duels_total                     &lt;dbl&gt; 80, 64, 56, 92, 77, 81, 65, …
+$ defensive_duels_won                       &lt;dbl&gt; 49, 44, 38, 63, 49, 60, 34, …
+$ defensive_duels_won_perc                  &lt;dbl&gt; 61.25, 68.75, 67.86, 68.48, …
+$ aerial_duels_total                        &lt;dbl&gt; 23, 23, 60, 60, 28, 28, 38, …
+$ aerial_duels_won                          &lt;dbl&gt; 10, 12, 26, 28, 18, 10, 14, …
+$ aerial_duels_won_perc                     &lt;dbl&gt; 43.48, 52.17, 43.33, 46.67, …
+$ sliding_tackles_total                     &lt;dbl&gt; 2, 5, 3, 4, 4, 9, 2, 1, 8, 0…
+$ sliding_tackles_successful                &lt;dbl&gt; 1, 1, 2, 3, 2, 4, 1, 0, 4, 0…
+$ sliding_tackles_successful_perc           &lt;dbl&gt; 50.00, 20.00, 66.67, 75.00, …
+$ interceptions                             &lt;dbl&gt; 52, 46, 44, 58, 51, 38, 18, …
+$ clearances                                &lt;dbl&gt; 12, 15, 14, 20, 7, 17, 12, 2…
+$ fouls                                     &lt;dbl&gt; 20, 7, 8, 15, 7, 4, 6, 12, 8…
+$ yellow_cards                              &lt;dbl&gt; 2, 1, 1, 3, 0, 1, 0, 2, 1, 1…
+$ red_cards                                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ forward_passes_total                      &lt;dbl&gt; 160, 183, 170, 133, 162, 143…
+$ forward_passes_accurate                   &lt;dbl&gt; 104, 122, 114, 82, 102, 98, …
+$ forward_passes_accurate_perc              &lt;dbl&gt; 65.00, 66.67, 67.06, 61.65, …
+$ back_passes_total                         &lt;dbl&gt; 67, 87, 42, 50, 64, 75, 52, …
+$ back_passes_accurate                      &lt;dbl&gt; 59, 78, 36, 43, 60, 71, 45, …
+$ back_passes_accurate_perc                 &lt;dbl&gt; 88.06, 89.66, 85.71, 86.00, …
+$ lateral_passes_total                      &lt;dbl&gt; 118, 93, 106, 82, 86, 142, 1…
+$ lateral_passes_accurate                   &lt;dbl&gt; 105, 79, 83, 59, 70, 121, 14…
+$ lateral_passes_accurate_perc              &lt;dbl&gt; 88.98, 84.95, 78.30, 71.95, …
+$ long_passes_total                         &lt;dbl&gt; 50, 44, 66, 44, 42, 26, 42, …
+$ long_passes_accurate                      &lt;dbl&gt; 27, 25, 32, 17, 15, 16, 21, …
+$ long_passes_accurate_perc                 &lt;dbl&gt; 54.00, 56.82, 48.48, 38.64, …
+$ passes_to_final_third_total               &lt;dbl&gt; 52, 57, 51, 44, 40, 58, 52, …
+$ passes_to_final_third_accurate            &lt;dbl&gt; 34, 41, 26, 30, 17, 45, 39, …
+$ passes_to_final_third_accurate_perc       &lt;dbl&gt; 65.38, 71.93, 50.98, 68.18, …
+$ progressive_passes_total                  &lt;dbl&gt; 76, 86, 80, 80, 61, 69, 81, …
+$ progressive_passes_accurate               &lt;dbl&gt; 44, 50, 51, 47, 33, 53, 57, …
+$ progressive_passes_accurate_perc          &lt;dbl&gt; 57.89, 58.14, 63.75, 58.75, …
+$ smart_passes_total                        &lt;dbl&gt; 0, 5, 5, 1, 6, 9, 0, 6, 6, 2…
+$ smart_passes_accurate                     &lt;dbl&gt; 0, 2, 2, 0, 3, 0, 0, 1, 3, 1…
+$ smart_passes_accurate_perc                &lt;dbl&gt; 0.00, 40.00, 40.00, 0.00, 50…
+$ throw_ins_total                           &lt;dbl&gt; 38, 26, 30, 24, 27, 20, 33, …
+$ throw_ins_accurate                        &lt;dbl&gt; 33, 23, 29, 22, 25, 18, 26, …
+$ throw_ins_accurate_perc                   &lt;dbl&gt; 86.84, 88.46, 96.67, 91.67, …
+$ goal_kicks                                &lt;dbl&gt; 10, 5, 8, 11, 6, 8, 7, 8, 14…
+$ match_tempo                               &lt;dbl&gt; 17.33, 18.35, 16.21, 14.16, …
+$ average_passes_per_possession             &lt;dbl&gt; 3.56, 3.29, 2.86, 2.59, 3.31…
+$ long_pass_percent                         &lt;dbl&gt; 12.11, 9.98, 17.51, 14.06, 1…
+$ average_shot_distance                     &lt;dbl&gt; 18.71, 17.59, 20.01, 17.80, …
+$ average_pass_length                       &lt;dbl&gt; 17.69, 16.80, 18.81, 19.37, …
+$ ppda                                      &lt;dbl&gt; 6.60, 8.76, 6.69, 7.49, 8.39…
+$ result                                    &lt;chr&gt; "L", "W", "L", "W", "W", "L"…
+$ pts                                       &lt;dbl&gt; 0, 3, 0, 3, 3, 0, 0, 3, 0, 3…</code></pre>
+</div>
+</div>
+</section>
+<section id="data-cleaning" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="data-cleaning"><span class="header-section-number">7.2</span> Data Cleaning</h2>
+<p>It is recommended to remove any columns that are not useful for the model, or those that highly correlate with our <code>result</code> columns. First to remove items that are not useful for the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>team_stats_clean <span class="ot">&lt;-</span> team_stats <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(date, match, competition, duration, team, scheme))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then to find the correlation between the columns and the <code>result</code> column. Since <code>result</code> is not a numeric value, I will use <code>pts</code> as a proxy for the <code>result</code> column.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>team_stats_cor <span class="ot">&lt;-</span> team_stats_clean <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(result)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  corrr<span class="sc">::</span><span class="fu">correlate</span>(<span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, pts) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hack to put both positive and negative correlations together</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pts =</span> <span class="fu">round</span>(pts, <span class="dv">2</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">abs_pts =</span> <span class="fu">abs</span>(pts)) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(abs_pts)) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>abs_pts) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>team_stats_cor <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="wufpgffpsh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wufpgffpsh table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wufpgffpsh thead, #wufpgffpsh tbody, #wufpgffpsh tfoot, #wufpgffpsh tr, #wufpgffpsh td, #wufpgffpsh th {
+  border-style: none;
+}
+
+#wufpgffpsh p {
+  margin: 0;
+  padding: 0;
+}
+
+#wufpgffpsh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wufpgffpsh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wufpgffpsh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wufpgffpsh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wufpgffpsh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wufpgffpsh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wufpgffpsh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wufpgffpsh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wufpgffpsh .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wufpgffpsh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wufpgffpsh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wufpgffpsh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wufpgffpsh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wufpgffpsh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wufpgffpsh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wufpgffpsh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wufpgffpsh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wufpgffpsh .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wufpgffpsh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wufpgffpsh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wufpgffpsh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wufpgffpsh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wufpgffpsh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wufpgffpsh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wufpgffpsh .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wufpgffpsh .gt_left {
+  text-align: left;
+}
+
+#wufpgffpsh .gt_center {
+  text-align: center;
+}
+
+#wufpgffpsh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wufpgffpsh .gt_font_normal {
+  font-weight: normal;
+}
+
+#wufpgffpsh .gt_font_bold {
+  font-weight: bold;
+}
+
+#wufpgffpsh .gt_font_italic {
+  font-style: italic;
+}
+
+#wufpgffpsh .gt_super {
+  font-size: 65%;
+}
+
+#wufpgffpsh .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wufpgffpsh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wufpgffpsh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wufpgffpsh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wufpgffpsh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wufpgffpsh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wufpgffpsh .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="term">term</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="pts">pts</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="term" class="gt_row gt_left">goals</td>
+<td headers="pts" class="gt_row gt_right">0.68</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">conceded_goals</td>
+<td headers="pts" class="gt_row gt_right">-0.68</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">shots_on_target</td>
+<td headers="pts" class="gt_row gt_right">0.38</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">shots_against_on_target</td>
+<td headers="pts" class="gt_row gt_right">-0.38</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">xg</td>
+<td headers="pts" class="gt_row gt_right">0.34</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">shots_on_target_perc</td>
+<td headers="pts" class="gt_row gt_right">0.29</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">shots_against_on_target_perc</td>
+<td headers="pts" class="gt_row gt_right">-0.26</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">counterattacks_with_shots</td>
+<td headers="pts" class="gt_row gt_right">0.23</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">shots_against_total</td>
+<td headers="pts" class="gt_row gt_right">-0.23</td></tr>
+    <tr><td headers="term" class="gt_row gt_left">clearances</td>
+<td headers="pts" class="gt_row gt_right">0.23</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>It should come as no surprise that the <code>goals</code> and <code>goals_conceded</code> columns are highly correlated with the <code>result</code>/<code>pts</code> column. We will remove these columns from the dataset, as well as the <code>pts</code> column. Note: I have also converted the <code>result</code> column to a factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>team_stats_clean <span class="ot">&lt;-</span> team_stats <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(date, match, competition, duration, team, scheme, goals, conceded_goals, pts)) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">result =</span> <span class="fu">as.factor</span>(result))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="feature-selection" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="feature-selection"><span class="header-section-number">7.2.1</span> Feature Selection</h3>
+<p>We now will use the <code>Boruta</code> package to select the most important features to predict the outcome of a match (i.e Win or Loss).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">111</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>boruta <span class="ot">&lt;-</span> <span class="fu">Boruta</span>(result <span class="sc">~</span> ., </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> team_stats_clean, </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">doTrace =</span> <span class="dv">0</span>, <span class="co"># set to 2 to see the progress</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">maxRuns =</span> <span class="dv">300</span>) <span class="co"># increase if you would like to try to further reduce</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(boruta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Boruta performed 299 iterations in 38.98194 secs.
+ 33 attributes confirmed important: average_passes_per_possession,
+back_passes_accurate, back_passes_total, clearances,
+counterattacks_total and 28 more;
+ 58 attributes confirmed unimportant: aerial_duels_total,
+aerial_duels_won, aerial_duels_won_perc, average_pass_length,
+average_shot_distance and 53 more;
+ 10 tentative attributes left: corners_total,
+counterattacks_with_shots_perc, forward_passes_accurate,
+free_kicks_total, long_pass_percent and 5 more;</code></pre>
+</div>
+</div>
+<p>Boruta allows us to visualized the results of the feature selection process.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(boruta, <span class="at">las =</span> <span class="dv">2</span>, <span class="at">cex.axis =</span> <span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="07-predictive-modeling_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>With such dense information, the graph can be a little tricky to read. We can also view the results in a table format.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>non_rejected_vars <span class="ot">&lt;-</span> <span class="fu">attStats</span>(boruta) <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"variable"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(meanImp)) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(variable, decision) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(decision <span class="sc">!=</span> <span class="st">"Rejected"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>non_rejected_vars <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="yqpkiwfukx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yqpkiwfukx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yqpkiwfukx thead, #yqpkiwfukx tbody, #yqpkiwfukx tfoot, #yqpkiwfukx tr, #yqpkiwfukx td, #yqpkiwfukx th {
+  border-style: none;
+}
+
+#yqpkiwfukx p {
+  margin: 0;
+  padding: 0;
+}
+
+#yqpkiwfukx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yqpkiwfukx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yqpkiwfukx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yqpkiwfukx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yqpkiwfukx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yqpkiwfukx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yqpkiwfukx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yqpkiwfukx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yqpkiwfukx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yqpkiwfukx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yqpkiwfukx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yqpkiwfukx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yqpkiwfukx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yqpkiwfukx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yqpkiwfukx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqpkiwfukx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yqpkiwfukx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yqpkiwfukx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yqpkiwfukx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqpkiwfukx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yqpkiwfukx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqpkiwfukx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yqpkiwfukx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqpkiwfukx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yqpkiwfukx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqpkiwfukx .gt_left {
+  text-align: left;
+}
+
+#yqpkiwfukx .gt_center {
+  text-align: center;
+}
+
+#yqpkiwfukx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yqpkiwfukx .gt_font_normal {
+  font-weight: normal;
+}
+
+#yqpkiwfukx .gt_font_bold {
+  font-weight: bold;
+}
+
+#yqpkiwfukx .gt_font_italic {
+  font-style: italic;
+}
+
+#yqpkiwfukx .gt_super {
+  font-size: 65%;
+}
+
+#yqpkiwfukx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yqpkiwfukx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yqpkiwfukx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yqpkiwfukx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yqpkiwfukx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yqpkiwfukx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yqpkiwfukx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="variable">variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="decision">decision</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="variable" class="gt_row gt_left">shots_against_on_target</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">xg</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">shots_on_target</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">shots_against_on_target_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">shots_on_target_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">clearances</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">shots_against_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">shots_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">lateral_passes_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">losses_high</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">throw_ins_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">interceptions</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">penalties_converted</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">lateral_passes_accurate</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">penalties_converted_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">penalty_area_entries_crosses</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">positional_attacks_with_shots_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">crosses_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">possession_percent</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">average_passes_per_possession</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">counterattacks_with_shots</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">smart_passes_accurate_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">passes_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">throw_ins_accurate</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">passes_accurate</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">counterattacks_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">match_tempo</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">deep_completed_passes</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">back_passes_accurate</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">passes_to_final_third_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">positional_attacks_with_shots</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">back_passes_total</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">passes_accurate_perc</td>
+<td headers="decision" class="gt_row gt_center">Confirmed</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">touches_in_penalty_area</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">penalty_area_entries_runs</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">losses_low</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">penalties_total</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">corners_total</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">forward_passes_accurate</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">smart_passes_accurate</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">counterattacks_with_shots_perc</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">long_pass_percent</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+    <tr><td headers="variable" class="gt_row gt_left">free_kicks_total</td>
+<td headers="decision" class="gt_row gt_center">Tentative</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>We are now going to build a model to predict the outcome of the matches based on the variables. We will split our data into a training and test set. We will use the training set to build our model, and the test set to evaluate the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Partition</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">222</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">2</span>, <span class="fu">nrow</span>(team_stats_clean), <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> team_stats_clean[ind <span class="sc">==</span> <span class="dv">1</span>, ]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> team_stats_clean[ind <span class="sc">==</span> <span class="dv">2</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>First, we will see how well our model can predict a W/L outcome using all of the variables. This will be our benchmark for testing our reduced variable models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest Model</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>rf_all_vars <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(result <span class="sc">~</span> ., <span class="at">data =</span> train)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>rf_all_vars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(formula = result ~ ., data = train) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 10
+
+        OOB estimate of  error rate: 27.59%
+Confusion matrix:
+    L   W class.error
+L 152  68   0.3090909
+W  57 176   0.2446352</code></pre>
+</div>
+</div>
+<p>Using all the data, we can see that the model can predict the outcome of the matches ~70% of the time.</p>
+<p>Now to look at how well the model predicts the test data. First, we will use all the variables to predict the outcome of the <code>test</code> data. I’ve split the process into two steps to show how it’s done. Here , <code>p</code> is returned, which is the prediction of either a “W” or “L” for each match in the <code>test</code> data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prediction &amp; Confusion Matrix - Test</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_all_vars, test)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>p[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 1  2  3  4  5  6  7  8  9 10 
+ L  W  L  W  W  L  L  W  W  L 
+Levels: L W</code></pre>
+</div>
+</div>
+<p><code>predict()</code> returns a vector of W/L predictions. We can use the <code>confusionMatrix()</code> function to see how well our model predicted the outcome of the test data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(p, test<span class="sc">$</span>result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   L   W
+         L 113  26
+         W  34 109
+                                          
+               Accuracy : 0.7872          
+                 95% CI : (0.7348, 0.8335)
+    No Information Rate : 0.5213          
+    P-Value [Acc &gt; NIR] : &lt;2e-16          
+                                          
+                  Kappa : 0.5747          
+                                          
+ Mcnemar's Test P-Value : 0.3662          
+                                          
+            Sensitivity : 0.7687          
+            Specificity : 0.8074          
+         Pos Pred Value : 0.8129          
+         Neg Pred Value : 0.7622          
+             Prevalence : 0.5213          
+         Detection Rate : 0.4007          
+   Detection Prevalence : 0.4929          
+      Balanced Accuracy : 0.7881          
+                                          
+       'Positive' Class : L               
+                                          </code></pre>
+</div>
+</div>
+<p>We can see that accuracy is 79%. This will be our benchmark to measure our reduced features.</p>
+<p>How well does our reduced model work? We will use all non-rejected variables (i.e.&nbsp;“Confirmed” and “Tentative”) from the Boruta model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest Models - Non-Rejected</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>rf_non_rej_model <span class="ot">&lt;-</span> <span class="fu">getNonRejectedFormula</span>(boruta) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>() <span class="sc">|&gt;</span>  <span class="co"># This replaces `p` from above to work in a pipe</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">randomForest</span>(<span class="at">data =</span> train) <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(test) <span class="sc">|&gt;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confusionMatrix</span>(test<span class="sc">$</span>result)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>rf_non_rej_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   L   W
+         L 116  25
+         W  31 110
+                                        
+               Accuracy : 0.8014        
+                 95% CI : (0.75, 0.8464)
+    No Information Rate : 0.5213        
+    P-Value [Acc &gt; NIR] : &lt;2e-16        
+                                        
+                  Kappa : 0.6028        
+                                        
+ Mcnemar's Test P-Value : 0.504         
+                                        
+            Sensitivity : 0.7891        
+            Specificity : 0.8148        
+         Pos Pred Value : 0.8227        
+         Neg Pred Value : 0.7801        
+             Prevalence : 0.5213        
+         Detection Rate : 0.4113        
+   Detection Prevalence : 0.5000        
+      Balanced Accuracy : 0.8020        
+                                        
+       'Positive' Class : L             
+                                        </code></pre>
+</div>
+</div>
+<p>We’ve actually improved our accuracy by reducing the number of variables in our model.</p>
+<p>Finally, we will build a model using only the “Confirmed” variables from the Boruta model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest Models - Confirmed</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">333</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>confirmed_model <span class="ot">&lt;-</span> <span class="fu">getConfirmedFormula</span>(boruta) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.formula</span>() <span class="sc">|&gt;</span> <span class="co"># This replaces `p` from above to work in a pipe</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">randomForest</span>(<span class="at">data =</span> train) <span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(test) <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">confusionMatrix</span>(test<span class="sc">$</span>result)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>confirmed_model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction   L   W
+         L 119  25
+         W  28 110
+                                          
+               Accuracy : 0.8121          
+                 95% CI : (0.7615, 0.8559)
+    No Information Rate : 0.5213          
+    P-Value [Acc &gt; NIR] : &lt;2e-16          
+                                          
+                  Kappa : 0.6238          
+                                          
+ Mcnemar's Test P-Value : 0.7835          
+                                          
+            Sensitivity : 0.8095          
+            Specificity : 0.8148          
+         Pos Pred Value : 0.8264          
+         Neg Pred Value : 0.7971          
+             Prevalence : 0.5213          
+         Detection Rate : 0.4220          
+   Detection Prevalence : 0.5106          
+      Balanced Accuracy : 0.8122          
+                                          
+       'Positive' Class : L               
+                                          </code></pre>
+</div>
+</div>
+<p>Here are the reduced features that we can use to predict the outcome of a match.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>non_rejected_vars <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(decision <span class="sc">==</span> <span class="st">"Confirmed"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(variable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "shots_against_on_target"            "xg"                                
+ [3] "shots_on_target"                    "shots_against_on_target_perc"      
+ [5] "shots_on_target_perc"               "clearances"                        
+ [7] "shots_against_total"                "shots_total"                       
+ [9] "lateral_passes_total"               "losses_high"                       
+[11] "throw_ins_total"                    "interceptions"                     
+[13] "penalties_converted"                "lateral_passes_accurate"           
+[15] "penalties_converted_perc"           "penalty_area_entries_crosses"      
+[17] "positional_attacks_with_shots_perc" "crosses_total"                     
+[19] "possession_percent"                 "average_passes_per_possession"     
+[21] "counterattacks_with_shots"          "smart_passes_accurate_perc"        
+[23] "passes_total"                       "throw_ins_accurate"                
+[25] "passes_accurate"                    "counterattacks_total"              
+[27] "match_tempo"                        "deep_completed_passes"             
+[29] "back_passes_accurate"               "passes_to_final_third_total"       
+[31] "positional_attacks_with_shots"      "back_passes_total"                 
+[33] "passes_accurate_perc"              </code></pre>
+</div>
+</div>
+<p>It is recommended that we turn to other models, as well as expert domain knowledge, to further refine our model. Some of these features, such as throw-ins, are not likely to be relevant, but may point to other features that are. The data provided in the model does not include opponents data, and so items like opponents turnovers, may be a proxy for the team’s throw-ins.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -196,9 +1673,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -263,6 +1754,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
